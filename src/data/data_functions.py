@@ -9,3 +9,11 @@ import pandas as pd
 
 def to_datetime():
     return
+
+
+def merge_df(dataframes):
+    # leftmost table = train.csv/test.csv
+    table = ['train','test']
+
+
+    return
