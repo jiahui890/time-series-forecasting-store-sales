@@ -3,13 +3,14 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from src.data.data_functions import merge_df, check_store_location_and_holiday
 import pandas as pd
 import re
 
 
 @click.command()
 @click.argument('input_filepath', nargs=5, type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
+@click.argument('output_filepath', nargs=1, type=click.Path())
 def main(input_filepath, output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
@@ -18,18 +19,25 @@ def main(input_filepath, output_filepath):
     # current working dir: C:\Users\FT-LT74\Desktop\notes\github\time-series-forecasting-store-sales\data\raw
     # fixme: change train.csv to test.csv when generating test dataset
 
-    # import data
+    # import all files and store as dictionary
     dataframes = {}
     for path in input_filepath:
         filename = re.findall(r'[^\\]+(?=\.)', path)
         df = pd.read_csv(path)
         dataframes[filename[0]] = df
 
-    print(dataframes)
+
+    # initial EDA
+    check_store_location_and_holiday(dataframes)
+
 
 
     # since test data has same features as train data, we need not encode supplementary info files (but it would be good prac to do so)
-    # merge df
+    # merge df and save interim
+    #merged_df = merge_df(dataframes)
+    #print(merged_df)
+    #merged_df.to_csv(output_filepath, index=False)
+
 
 
 
