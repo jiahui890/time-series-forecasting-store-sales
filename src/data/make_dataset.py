@@ -3,7 +3,7 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
-from src.data.data_functions import merge_df, check_store_location_and_holiday
+from src.data.data_functions import merge_df
 import pandas as pd
 import re
 
@@ -16,8 +16,10 @@ def main(input_filepath, output_filepath):
         cleaned data ready to be analyzed (saved in ../processed).
     """
 
+    # fixme
     # current working dir: C:\Users\FT-LT74\Desktop\notes\github\time-series-forecasting-store-sales\data\raw
-    # fixme: change train.csv to test.csv when generating test dataset
+    # parameters: raw\train.csv raw\stores.csv raw\transactions.csv raw\oil.csv raw\holidays_events.csv interim\merged_df.csv
+    # TODO: change train.csv to test.csv when generating test dataset
 
     # import all files and store as dictionary
     dataframes = {}
@@ -27,19 +29,11 @@ def main(input_filepath, output_filepath):
         dataframes[filename[0]] = df
 
 
-    # initial EDA
-    check_store_location_and_holiday(dataframes)
-
-
-
     # since test data has same features as train data, we need not encode supplementary info files (but it would be good prac to do so)
     # merge df and save interim
-    #merged_df = merge_df(dataframes)
-    #print(merged_df)
-    #merged_df.to_csv(output_filepath, index=False)
-
-
-
+    merged_df = merge_df(dataframes)
+    print(merged_df)
+    merged_df.to_csv(output_filepath, index=False)
 
 
     logger = logging.getLogger(__name__)
