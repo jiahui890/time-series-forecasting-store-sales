@@ -18,6 +18,14 @@ import numpy as np
 @click.argument('output_filepath', nargs=1, type=click.Path())
 def main(input_filepath, output_filepath):
 
+    df = pd.read_csv(input_filepath)
+    print(df)
+
+    # some EDA --> plot graphs
+
+    # feature engineering
+
+
 
     logger = logging.getLogger(__name__)
     logger.info('data manipulation for features')
