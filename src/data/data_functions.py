@@ -64,6 +64,9 @@ def merge_df(dataframes):
     #df = df.merge(dataframes['holidays_events'],how='left', on=['date'])
     final_df = matching_store_and_holiday_location(df, dataframes['holidays_events'])
 
+    # manipulations
     final_df.rename(columns={"type_x": "store_type", "type_y": "holiday_type"}, inplace=True)
+    final_df['date'] = pd.to_datetime(final_df['date'], format='%Y-%m-%d')
+
     return final_df
 

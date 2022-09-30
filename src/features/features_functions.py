@@ -8,6 +8,9 @@ import pandas as pd
 
 
 def clean_data():
+    # check for NA
+    # check for outliers
+
     return
 
 

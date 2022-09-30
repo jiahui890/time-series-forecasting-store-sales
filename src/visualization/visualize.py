@@ -12,6 +12,7 @@ from dotenv import find_dotenv, load_dotenv
 import logging
 import pandas as pd
 import numpy as np
+from src.visualization.EDA_functions import sales_performance
 
 
 @click.command()
@@ -20,10 +21,13 @@ import numpy as np
 def main(input_filepath, output_filepath):
 
     df = pd.read_csv(input_filepath)
-    print(df)
+    # print(df.info())
+
+    # EDA plots
+    sales_performance(df, output_filepath)
 
     logger = logging.getLogger(__name__)
-    logger.info('data manipulation for features')
+    logger.info('Plotting figures')
 
 
 if __name__ == '__main__':
