@@ -11,6 +11,7 @@ from dotenv import find_dotenv, load_dotenv
 import logging
 import pandas as pd
 import numpy as np
+from src.features.features_functions import extract_dates
 
 
 @click.command()
@@ -19,11 +20,12 @@ import numpy as np
 def main(input_filepath, output_filepath):
 
     df = pd.read_csv(input_filepath)
+
+    # some EDA --> plot graphs?
+    # feature engineering: extract dates
+    df = extract_dates(df)
     print(df)
 
-    # some EDA --> plot graphs
-
-    # feature engineering
 
 
 
