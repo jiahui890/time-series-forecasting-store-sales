@@ -5,6 +5,7 @@ desc:
 """
 
 import pandas as pd
+import numpy as np
 
 
 def extract_dates(df):
@@ -24,8 +25,17 @@ def clean_data():
 
 
 def check_celebrated_holiday(df):
+    def check_holiday(x):
+        if x['transferred'] == True or x['holiday_type'] == 'Work Day':
+            return 0
+        elif x['holiday_type'] == np.nan:
+            return 0
+        else:
+            return 1
 
-
-    df['Is_Holiday_Celebrated'] = ''
-
+    df['Is_Holiday_Celebrated'] = df.apply(check_holiday, axis=1)
     return df
+
+
+def check_payday():
+    return
