@@ -11,7 +11,7 @@ from dotenv import find_dotenv, load_dotenv
 import logging
 import pandas as pd
 import numpy as np
-from src.features.features_functions import extract_dates
+from src.features.features_functions import extract_dates, check_celebrated_holiday,check_payday, fill_in_nulls, label_encoding
 
 
 @click.command()
@@ -21,13 +21,16 @@ def main(input_filepath, output_filepath):
 
     df = pd.read_csv(input_filepath)
 
-    # some EDA --> plot graphs?
-    # feature engineering: extract dates
+    # feature engineering
     df = extract_dates(df)
+    df = check_celebrated_holiday(df)
+    df = check_payday(df)
+    df = fill_in_nulls(df)
+    df = label_encoding(df)
     print(df)
 
-
-
+    # save to file
+    df.to_csv(output_filepath, index=False)
 
     logger = logging.getLogger(__name__)
     logger.info('data manipulation for features')

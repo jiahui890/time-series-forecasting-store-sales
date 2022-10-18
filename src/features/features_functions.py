@@ -6,6 +6,9 @@ desc:
 
 import pandas as pd
 import numpy as np
+from datetime import datetime
+import calendar
+from sklearn import preprocessing
 
 
 def extract_dates(df):
@@ -17,18 +20,20 @@ def extract_dates(df):
     return df
 
 
-def clean_data():
+def fill_in_nulls(df):
     # check for NA
-    # check for outliers
-
-    return
+    df['transactions'].fillna(0, inplace=True)
+    df['dcoilwtico'].fillna(0, inplace=True)
+    df['transferred'].fillna(False, inplace=True)
+    df.fillna('None', inplace=True)  # fillna for the rest are strings
+    return df
 
 
 def check_celebrated_holiday(df):
     def check_holiday(x):
         if x['transferred'] == True or x['holiday_type'] == 'Work Day':
             return 0
-        elif x['holiday_type'] == np.nan:
+        elif str(x['holiday_type']).lower()=='nan':
             return 0
         else:
             return 1
@@ -37,5 +42,23 @@ def check_celebrated_holiday(df):
     return df
 
 
-def check_payday():
-    return
+def check_payday(df):
+    def payday(x):
+        end_of_month = calendar.monthrange(x['Year'], x['Month'])[1]
+        if (x['Day'] == 15) or (x['Day'] == end_of_month):
+            return 1
+        else:
+            return 0
+
+    df['Is_PayDay'] = df.apply(payday, axis=1)
+    return df
+
+
+def label_encoding(df):
+    # getting object type columns
+    cols = list(df.select_dtypes(include=[object, bool]).columns)
+    le = preprocessing.LabelEncoder()
+    df[cols] = df[cols].apply(le.fit_transform)
+    return df
+
+
