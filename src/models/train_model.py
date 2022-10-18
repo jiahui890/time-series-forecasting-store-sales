@@ -8,7 +8,10 @@ desc:
 
 def main():
 
+    # splitting data with valid-set same period as test-set
     # defining models [time-series, rf, lstm]
+    # training with/without normalizing values
+    # forecasting per store?
 
     return
 

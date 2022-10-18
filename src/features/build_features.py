@@ -11,7 +11,8 @@ from dotenv import find_dotenv, load_dotenv
 import logging
 import pandas as pd
 import numpy as np
-from src.features.features_functions import extract_dates, check_celebrated_holiday,check_payday, fill_in_nulls, label_encoding
+from src.features.features_functions import extract_dates, check_taken_holiday,check_payday, fill_in_nulls, \
+    label_encoding, check_external_stimuli, moving_average
 
 
 @click.command()
@@ -23,14 +24,21 @@ def main(input_filepath, output_filepath):
 
     # feature engineering
     df = extract_dates(df)
-    df = check_celebrated_holiday(df)
+    df = check_taken_holiday(df)
     df = check_payday(df)
+    df = check_external_stimuli(df)
     df = fill_in_nulls(df)
+    df = moving_average(df)
     df = label_encoding(df)
     print(df)
 
     # save to file
     df.to_csv(output_filepath, index=False)
+
+    # statistical tests for traditional time-series modeling: ARIMA etc
+
+
+
 
     logger = logging.getLogger(__name__)
     logger.info('data manipulation for features')
